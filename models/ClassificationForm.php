@@ -9,16 +9,18 @@
 namespace app\models;
 
 
-use app\components\DMModel;
 use linslin\yii2\curl\Curl;
+use yii\base\Model;
+use yii\helpers\Url;
 use yii\web\UploadedFile;
 
-class ForecastingForm extends DMModel
+class ClassificationForm extends DMModel
 {
     public $file;
     public $method;
     public $window;
     public $test_count;
+
 
     public function rules()
     {
@@ -53,7 +55,7 @@ class ForecastingForm extends DMModel
                 ->setHeaders([
                     'Content-Type' => 'application/json',
                     'Content-Length' => strlen(json_encode($params))
-                ])->post(REQUEST_URL.'forecasting');
+                ])->post('http://localhost:5000/mdm/api/v1.0/forecasting');
             return $response;
         }
     }
