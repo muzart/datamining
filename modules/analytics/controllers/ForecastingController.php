@@ -11,15 +11,17 @@ class ForecastingController extends \yii\web\Controller
     {
         $model = new ForecastingForm();
         if($model->load(\Yii::$app->request->post())){
-            echo $model->request();
-            \Yii::$app->end();
+            $data = $model->request();
+            $data = json_decode($data);
+            $id = $data['id'];
+            return $this->redirect(['solve','id'=>$id]);
         }
         return $this->render('index',[
             'model' => $model
         ]);
     }
 
-    public function actionSolve()
+    public function actionSolve($id)
     {
         return $this->render('solve');
     }
