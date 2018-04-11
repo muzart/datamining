@@ -47,13 +47,13 @@ class ForecastingForm extends DMModel
                     'window_size' => $this->window * 1,
                     'test_count' => $this->test_count * 1,
                 ]];
-            echo json_encode($params);
-            exit;
+            //echo json_encode($params);
+            //exit;
             $response = $curl->setRequestBody(json_encode($params))
                 ->setHeaders([
                     'Content-Type' => 'application/json',
                     'Content-Length' => strlen(json_encode($params))
-                ])->post(REQUEST_URL.'forecasting');
+                ])->post('http://localhost:5000/mdm/api/v1.0/forecasting');
             return $response;
         }
     }

@@ -6,24 +6,35 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    <div id="result"></div>
+                    <div id="result"><?php echo $id;?></div>
                 </div>
             </div>
         </div>
     </div>
 
-<script>
-    (function pollServer() {
-        $.getJSON('/url', function (response) {
-            if (response.data) {
-                showResult(data);
-            }
-            setTimeout(pollServer, 1000);
+<?php
+$script = <<< JS
+    function pollServer() {	
+	var idx = "$id";
+	$.ajax({
+            url: 'http://localhost:5000/mdm/api/v1.0/check',
+            type: 'post',
+            dataType: 'json',
+	    contentType: "application/json",
+            success: function (data) {
+                $('#result').html(data);
+            },
+            data: "{\"params\": {\"id\":idx}}",
         });
-    }());
+	        
+    };
     function showResult(data){
         if(data.status == 'waiting'){
             $('#result').html('<h2>Waiting...</h2>');
         }
     }
-</script>
+    setTimeout(pollServer,2000);
+JS;
+//маркер конца строки, обязательно сразу, без пробелов и табуляции
+$this->registerJs($script, yii\web\View::POS_READY);
+?>
