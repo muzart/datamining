@@ -21,8 +21,11 @@ $script = <<< JS
             dataType: 'json',
 	        contentType: "application/json",
             success: function(data){
-                var d = JSON.parse(data)
-                $("#result").append("<br>Status: "+d.status);
+                var d = JSON.parse(data);
+                if(d.status == 'ok')
+                    $('#result').html("<img src=\"http://localhost:5000"+d.image+"\" >");
+                else 
+                    $("#result").html("<h1>Status: "+d.status+"</h1>");
             },
             data: "{\"params\": {\"id\":\"$id\"}}",
         });
