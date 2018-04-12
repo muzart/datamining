@@ -15,16 +15,16 @@
 <?php
 $script = <<< JS
     function pollServer() {	
-	var idx = "$id";
 	$.ajax({
             url: 'http://localhost:5000/mdm/api/v1.0/check',
             type: 'post',
             dataType: 'json',
-	    contentType: "application/json",
-            success: function (data) {
-                $('#result').html(data);
+	        contentType: "application/json",
+            success: function(data){
+                var d = JSON.parse(data)
+                $("#result").append("<br>Status: "+d.status);
             },
-            data: "{\"params\": {\"id\":idx}}",
+            data: "{\"params\": {\"id\":\"$id\"}}",
         });
 	        
     };
@@ -33,8 +33,7 @@ $script = <<< JS
             $('#result').html('<h2>Waiting...</h2>');
         }
     }
-    setTimeout(pollServer,2000);
+    var checker = setInterval(pollServer,4000);
 JS;
-//маркер конца строки, обязательно сразу, без пробелов и табуляции
 $this->registerJs($script, yii\web\View::POS_READY);
 ?>
